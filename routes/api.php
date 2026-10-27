@@ -15,6 +15,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
 
     Route::post('/items', [ItemController::class, 'store']);
-    Route::patch('/items/{item}', [ItemController::class, 'markResolved']);
-    Route::delete('/items/{item}', [ItemController::class, 'destroy']);
+
+    // Khusus admin (dicek oleh middleware EnsureUserHasRole)
+    Route::middleware('role:admin')->group(function () {
+        Route::patch('/items/{item}', [ItemController::class, 'markResolved']);
+        Route::delete('/items/{item}', [ItemController::class, 'destroy']);
+    });
 });
